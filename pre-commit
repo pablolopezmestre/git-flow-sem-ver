@@ -1,0 +1,15 @@
+#!/bin/sh
+
+CURRENT_BRANCH=$(git symbolic-ref HEAD)
+
+if [ "$CURRENT_BRANCH" == "refs/heads/master" ]; then
+    echo "****************************************"
+    echo "***                                  ***"
+    echo "***   \033[31mDirect commits to the master\033[0m   ***"
+    echo "***   \033[31mbranch are not allowed.\033[0m        ***"
+    echo "***                                  ***"
+    echo "****************************************"
+    exit 77 # permission denied
+else
+    exit 0
+fi

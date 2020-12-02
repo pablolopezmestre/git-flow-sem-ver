@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Runs during git flow release start
+#
+# Positional arguments:
+# $1 Version
+#
+# Return VERSION - When VERSION is returned empty, git-flow will stop as the
+# version is necessary
+#
+# The following variables are available as they are exported by git-flow:
+#
+# MASTER_BRANCH - The branch defined as Master
+# DEVELOP_BRANCH - The branch defined as Develop
+#
+VERSION=$1
+
+# Implement your script here.
+#
+# Se modifica el comportamiento de Git Flow para lanzar hotfixes. Forzamos para utilizar Semantic Version, de tal
+# manera que al tratarse de un hotfix, siempre será una versión 'patch'.
+#
+# Obtenemos del repositorio remoto las últimas tags que coinciden con el patrón vX.Y.Z, y se calcula el número de
+# versión siguiente. En caso de no existir ninguna tag, se parte de 0.0.0.
+#
+# Si el formato de SEMVER no es correcto, devolveremos un mensaje con el prefijo 'ERROR', para capturarlo en el
+# siguiente hook y cortar la ejecución.
+
+SCRIPT_PATH=${0%/*}
+FUNCTIONS="${SCRIPT_PATH}/inc/functions.sh"
+
+if [ ! -f $FUNCTIONS ]; then
+    echo "\033[0;31m$FUNCTIONS not found.\033[0m"
+    exit 77
+fi
+
+source ${FUNCTIONS}
+
+__get_next_version "patch"
+
+# To terminate the git-flow action, return a non-zero exit code.
+exit 0

@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Runs before git flow feature publish
+#
+# Positional arguments:
+# $1    The friendly name of the branch
+# $2    The origin remote
+# $3    The full branch name (including the feature prefix)
+#
+# The following variables are available as they are exported by git-flow:
+#
+# MASTER_BRANCH - The branch defined as Master
+# DEVELOP_BRANCH - The branch defined as Develop
+#
+NAME=$1
+ORIGIN=$2
+BRANCH=$3
+
+# Implement your script here.
+merge_request=$(git push -u $ORIGIN $BRANCH -o merge_request.create -o merge_request.remove_source_branch -o merge_request.title="Draft: $BRANCH" -o merge_request.squash -o merge_request.target=$DEVELOP_BRANCH)
+$(git fetch -q "$ORIGIN" "$BRANCH" || die "Could not fetch branch '$BRANCH' from remote '$ORIGIN'.")
+$(git checkout "$BRANCH" || die "Could not check out branch '$BRANCH'.")
+exit 1
+
+# To terminate the git-flow action, return a non-zero exit code.
+exit 0
