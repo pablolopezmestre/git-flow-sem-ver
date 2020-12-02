@@ -1,4 +1,4 @@
-# GitFlo Semantic Version
+# GitFlow Semantic Version
 Automated Semantic Version with GitFlow Hooks & GitLab
 
 
